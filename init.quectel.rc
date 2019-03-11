@@ -1,0 +1,13 @@
+# hardware/ril/rild/rild.rc
+service ril-daemon /vendor/bin/hw/rild -l /vendor/lib64/libquectel-ril.so
+    class main
+    user root
+    group radio vpn cache inet misc audio log readproc wakelock
+    capabilities BLOCK_SUSPEND NET_ADMIN NET_RAW
+
+# hardware/interfaces/gnss/1.0/default/android.hardware.gnss@1.0-service.rc
+service gnss_service /vendor/bin/hw/android.hardware.gnss@1.0-service
+    class hal
+    user gps
+    group system gps radio
+

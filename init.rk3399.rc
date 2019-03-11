@@ -1,0 +1,54 @@
+import init.quectel.rc
+
+on property:sys.boot_completed=1
+    chown root system /sys/class/devfreq/ff9a0000.gpu/governor
+    chmod 0664 /sys/class/devfreq/ff9a0000.gpu/governor
+    chown root system /sys/class/devfreq/ff9a0000.gpu/min_freq
+    chmod 0664 /sys/class/devfreq/ff9a0000.gpu/min_freq
+    chown root system /sys/class/devfreq/ff9a0000.gpu/max_freq
+    chmod 0664 /sys/class/devfreq/ff9a0000.gpu/max_freq
+
+on early-boot
+    # Update dm-verity state and set partition.*.verified properties
+    verity_update_state
+
+on boot
+    chown system system /sys/class/thermal/thermal_zone0/policy
+    chown system system /sys/class/thermal/thermal_zone1/policy
+    chown system system /sys/class/thermal/thermal_zone2/policy
+    
+    # update cpusets feature nodes for rk3399 tablet
+    write /dev/cpuset/foreground/cpus 0-5
+    write /dev/cpuset/foreground/boost/cpus 4-5
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0-3
+    write /dev/cpuset/top-app/cpus 4-5
+    write /sys/devices/system/cpu/cpufreq/policy4/interactive/target_loads 65
+    ioprio rt 4
+
+    # reduce schedul time to improve io performance
+    write /sys/kernel/debug/sched_features NO_ENERGY_AWARE
+
+    chmod 0220 /sys/class/gpio/export
+    chown root system /sys/class/gpio/export
+    chmod 0220 /sys/class/gpio/unexport
+    chown root system /sys/class/gpio/unexport
+
+    chmod 0220 /sys/class/pwm/pwmchip1/export
+    chown root system /sys/class/pwm/pwmchip1/export
+    chmod 0220 /sys/class/pwm/pwmchip1/unexport
+    chown root system /sys/class/pwm/pwmchip1/unexport
+
+on init
+    # Load persistent dm-verity state
+    verity_load_state
+
+    chown root root /sys/class/devfreq/dmc/system_status
+    chmod 0666 /sys/class/devfreq/dmc/system_status
+    
+on post-fs-data
+
+    #CABC
+    chown root system /sys/class/graphics/fb0/cabc
+    chmod 0664 /sys/class/graphics/fb0/cabc
+

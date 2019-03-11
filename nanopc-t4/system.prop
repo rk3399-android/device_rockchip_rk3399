@@ -1,0 +1,9 @@
+#
+# system.prop
+#
+
+#set default lcd density for nanopi4
+ro.sf.lcd_density=228
+
+#should enable it for eDP
+# persist.demo.hdmirotationlock=1
