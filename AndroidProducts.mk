@@ -15,6 +15,7 @@
 #
 
 PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/nanopc_t4_car.mk \
     $(LOCAL_DIR)/nanopc_t4.mk \
     $(LOCAL_DIR)/rk3399.mk \
     $(LOCAL_DIR)/rk3399_mid.mk

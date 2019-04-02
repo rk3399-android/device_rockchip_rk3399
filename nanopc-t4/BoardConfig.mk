@@ -1,8 +1,6 @@
 include device/rockchip/rk3399/BoardConfig.mk
 
-TARGET_BOARD_PLATFORM_PRODUCT := tablet
-
-PRODUCT_PACKAGE_OVERLAYS := device/rockchip/rk3399/nanopc-t4/overlay
+PRODUCT_PACKAGE_OVERLAYS += device/rockchip/rk3399/nanopc-t4/overlay
 
 BOARD_SENSOR_ST := true
 BOARD_SENSOR_MPU_PAD := false

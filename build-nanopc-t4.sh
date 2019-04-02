@@ -19,7 +19,7 @@ VARIANT="userdebug"
 NR_CPU=$(grep processor /proc/cpuinfo | awk '{field=$NF};END{print field+1}')
 MAKE="make -j${NR_CPU}"
 
-if grep "Ubuntu 18.04" /etc/lsb-release >/dev/null 2>&1; then
+if grep "Ubuntu 18.04" /etc/lsb-release >/dev/null 2>&1 || grep "Ubuntu 18.10" /etc/lsb-release >/dev/null 2>&1 ; then
 	export LC_ALL=C
 fi
 
@@ -79,6 +79,8 @@ function usage()
 	echo "  -M         make rockdev image"
 	echo "  -u         generate update.img"
 	echo
+	echo "  -p         product to build (default is ${PRODUCT})"
+	echo "  -v         product to build (default is ${VARIANT})"
 	echo "  -h         show this help message and exit"
 	exit 1
 }
@@ -86,7 +88,7 @@ function usage()
 function parse_args()
 {
 	[ -z "$1" ] && usage;
-	TEMP=`getopt -o "aBKWFMuh" --long "all" -n "$SELF" -- "$@"`
+	TEMP=`getopt -o "aBKWFMup:v:h" --long "all" -n "$SELF" -- "$@"`
 	if [ $? != 0 ] ; then exit 1; fi
 	eval set -- "$TEMP"
 
@@ -103,6 +105,8 @@ function parse_args()
 				 shift 1;;
 			-M ) MAKE_RKDEV_IMG=true;   shift 1;;
 			-u ) GEN_UPDATE_IMG=true;   shift 1;;
+			-p ) PRODUCT="$2";   shift 2;;
+			-v ) VARIANT="$2";   shift 2;;
 
 			-h ) usage; exit 1 ;;
 			-- ) shift; break  ;;
@@ -139,7 +143,6 @@ function build_wifi() {
 
 function build_android() {
 	source build/envsetup.sh
-
 	FA_RunCmd lunch ${PRODUCT}-${VARIANT}
 	FA_RunCmd ${MAKE} $*
 }
@@ -171,7 +174,7 @@ function gen_update_img() {
 		./mkupdate.sh
 		ret=$?
 		FA_ShowTime $ret
-		cd - >/null
+		cd - >/dev/null
 	}
 
 	mv $PACK_TOOL_DIR/rockdev/update.img $IMAGE_PATH/

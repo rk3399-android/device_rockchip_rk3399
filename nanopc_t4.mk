@@ -18,7 +18,13 @@ PRIV_DEVICE_PATH := device/rockchip/rk3399/nanopc-t4
 TARGET_DEVICE_DIR := $(PRIV_DEVICE_PATH)
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
+
 include device/rockchip/rk3399/nanopc-t4/BoardConfig.mk
+
+ifneq ($(filter car, $(strip $(TARGET_BOARD_PLATFORM_PRODUCT))), )
+$(call inherit-product, packages/services/Car/car_product/build/car.mk)
+endif
+
 
 # Quectel
 $(call inherit-product-if-exists, vendor/quectel/ec20/device-partial.mk)
@@ -26,6 +32,7 @@ $(call inherit-product-if-exists, vendor/quectel/ec20/device-partial.mk)
 # Inherit from those products. Most specific first.
 $(call inherit-product, device/rockchip/rk3399/device.mk)
 $(call inherit-product, device/rockchip/common/device.mk)
+
 
 PRODUCT_CHARACTERISTICS := tablet
 PRODUCT_SHIPPING_API_LEVEL := 26
@@ -89,3 +96,29 @@ $(call inherit-product-if-exists, vendor/friendlyelec/apps/device-partial.mk)
 $(call inherit-product-if-exists, vendor/google/gapps/device-partial.mk)
 
 BUILD_WITHOUT_VENDOR_APPS := RkApkinstaller RkExplorer
+
+
+
+ifneq ($(filter car, $(strip $(TARGET_BOARD_PLATFORM_PRODUCT))), )
+# Auto modules
+PRODUCT_PACKAGES += \
+    android.hardware.automotive.vehicle@2.0-impl \
+    android.hardware.automotive.vehicle@2.0-service
+
+# Enable landscape
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.screen.landscape.xml:system/etc/permissions/android.hardware.screen.landscape.xml
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    android.car.drawer.unlimited=true \
+    android.car.hvac.demo=true \
+    com.android.car.radio.demo=true \
+    com.android.car.radio.demo.dual=true
+
+TARGET_USES_CAR_FUTURE_FEATURES := true
+
+# Add car related sepolicy.
+BOARD_SEPOLICY_DIRS += \
+	device/rockchip/rk3399/nanopc-t4/car/sepolicy \
+    packages/services/Car/car_product/sepolicy
+endif
