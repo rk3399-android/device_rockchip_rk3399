@@ -111,7 +111,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     android.car.drawer.unlimited=true \
-    android.car.hvac.demo=true \
     com.android.car.radio.demo=true \
     com.android.car.radio.demo.dual=true
 

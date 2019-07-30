@@ -9,3 +9,11 @@ PRODUCT_MANUFACTURER := FriendlyELEC (www.friendlyarm.com)
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	config.default_display_rotation=1
+
+PRODUCT_PACKAGES += \
+	SensorsApp \
+	smile_auto_emu
+	
+PRODUCT_COPY_FILES += \
+	 vendor/smile/autohost/property.xml:vendor/etc/property.xml \
+	 vendor/smile/autohost/scenario.xml:vendor/etc/scenario.xml
