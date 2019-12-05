@@ -128,10 +128,11 @@ ifeq ($(strip $(BOARD_USE_ANDROIDNN)), true)
 DEVICE_MANIFEST_FILE := device/rockchip/$(TARGET_BOARD_PLATFORM)/manifest.xml
 endif
 
-ifeq ($(BOARD_HAS_GPS),true)
-DEVICE_MANIFEST_FILE += device/rockchip/$(TARGET_BOARD_PLATFORM)/mgnss.xml
+ifneq ($(filter car, $(strip $(TARGET_BOARD_PLATFORM_PRODUCT))), )
+BOARD_HAS_GPS := true
+DEVICE_MANIFEST_FILE += device/rockchip/$(TARGET_BOARD_PLATFORM)/manifest_auto.xml
 endif
 
-ifneq ($(filter car, $(strip $(TARGET_BOARD_PLATFORM_PRODUCT))), )
-DEVICE_MANIFEST_FILE += device/rockchip/$(TARGET_BOARD_PLATFORM)/manifest_auto.xml
+ifeq ($(BOARD_HAS_GPS),true)
+DEVICE_MANIFEST_FILE += device/rockchip/$(TARGET_BOARD_PLATFORM)/mgnss.xml
 endif

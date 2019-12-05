@@ -13,7 +13,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PACKAGES += \
 	SensorsApp \
 	smile_auto_emu
-	
+
+PRODUCT_PACKAGES += \
+	android.hardware.gnss@1.0-impl \
+	gps.rk3399 \
+	android.hardware.gnss@1.0-service
+
 PRODUCT_COPY_FILES += \
 	 vendor/smile/autohost/property.xml:vendor/etc/property.xml \
 	 vendor/smile/autohost/scenario.xml:vendor/etc/scenario.xml
