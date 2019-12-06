@@ -20,5 +20,5 @@ PRODUCT_PACKAGES += \
 	android.hardware.gnss@1.0-service
 
 PRODUCT_COPY_FILES += \
-	 vendor/smile/autohost/property.xml:vendor/etc/property.xml \
-	 vendor/smile/autohost/scenario.xml:vendor/etc/scenario.xml
+	 vendor/smile/autohost/property.xml:$(TARGET_COPY_OUT_VENDOR)/etc/property.xml \
+	 vendor/smile/autohost/scenario.xml:$(TARGET_COPY_OUT_VENDOR)/etc/scenario.xml
